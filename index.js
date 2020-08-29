@@ -28,9 +28,21 @@ function processFirstItem(stringList, callback) {
  * 
  * 1. What is the difference between counter1 and counter2?
  * 
+ * counter1 is set equal to a function returned from counterMaker() which has the
+ * count variable declared in it(function level scope), whereas counter2 is a declared function on its own
+ * with the count variable declared in the global scope (outisde of the function).
+ * 
  * 2. Which of the two uses a closure? How can you tell?
  * 
+ * counter2 uses a closure because it has the variable count declared outside of it, but it is still able to
+ * access it in its lexical environment. counter1 is set to the returned function of counter(), which does use 
+ * a closure, but counter1 itself technically does not...?
+ * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
+ * 
+ * counter1 would be preferable in situations where you don't want to store your incremented count at the global
+ * scope, instead it can be stored in counterMaker and ran inside that block. counter2 would be better in situations
+ * where you would need to store your incremented count at the global scope.
  *
 */
 
@@ -56,11 +68,15 @@ function counter2() {
 
 Write a function called `inning` that generates a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/){
-
-    /*Code Here*/
+function inning(){
+  
+    let score =  Math.floor(Math.random() * 3);
+    return score;
 
 }
+
+console.log(inning());
+
 
 /* Task 3: finalScore()
 
@@ -76,12 +92,25 @@ finalScore(inning, 9) might return:
 
 */ 
 
-function finalScore(/*code Here*/){
-
-  /*Code Here*/
-
-}
-
+ function finalScore(callback, num){
+  console.log(callback());
+  let home = 0;
+   let away = 0;
+   console.log(home);
+   console.log(away);
+   for (let i = 0; i < num; i++) {
+     home = home + callback();
+     
+     away = away + callback();
+     
+    }
+    let runs = {
+      Home : home,
+      Away : away,
+    };
+    return runs;
+ }
+console.log(finalScore(inning, 9));
 /* Task 4: 
 
 Create a function called `scoreboard` that accepts the following parameters: 
@@ -103,8 +132,24 @@ and returns the score at each pont in the game, like so:
 
 Final Score: 6 - 10 */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(callback, num) {
+  let home = 0;
+   let away = 0;
+  for (let i = 1; i < num; i++) {
+    home = home + callback();
+     
+     away = away + callback();
+    if(i === 1) {
+      console.log(i + "st inning: " + home +  " - " + away);
+    } else if(i === 2) {
+      console.log(i + "nd inning: " + home +  " - " + away);
+    } else if(i === 3) {
+      console.log(i + "rd inning: " + home +  " - " + away);
+    } else {
+    console.log(i + "th inning: " + home +  " - " + away);
+    }
+  }
+  console.log("Final score: " + home + " - " + away);
 }
 
-
+scoreboard(inning, 10);
